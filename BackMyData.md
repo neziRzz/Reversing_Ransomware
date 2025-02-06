@@ -9,3 +9,5 @@
 
 # Detailed Analysis
 - The Ransomware decrypted its setting by a using a custom made AES algorithm which is very similar to [this](https://github.com/pjok1122/AES-Optimization) with a harcoded key
+
+![image](https://github.com/user-attachments/assets/63140000-a1a5-4346-89cd-4bc23db51433)
