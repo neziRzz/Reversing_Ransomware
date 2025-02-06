@@ -296,4 +296,3 @@ HKEY sub_871236()
   return phkResult;
 }
 ```
-- The Ransomware also find these following processes ```msftesql.exe;sqlagent.exe;sqlbrowser.exe;sqlservr.exe;sqlwriter.exe;oracle.exe;ocssd.exe;dbsnmp.exe;synctime.exe;agntsvc.exe;mydesktopqos.exe;isqlplussvc.exe;xfssvccon.exe;mydesktopservice.exe;ocautoupds.exe;agntsvc.exe;agntsvc.exe;agntsvc.exe;encsvc.exe;firefoxconfig.exe;tbirdconfig.exe;ocomm.exe;mysqld.exe;mysqld-nt.exe;mysqld-opt.exe;dbeng50.exe;sqbcoreservice.exe;excel.exe;infopath.exe;msaccess.exe;mspub.exe;onenote.exe;outlook.exe;powerpnt.exe;steam.exe;thebat.exe;thebat64.exe;thunderbird.exe;visio.exe;winword.exe;wordpad.exe```
